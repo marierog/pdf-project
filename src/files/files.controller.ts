@@ -11,6 +11,7 @@ import {
 import { title } from 'process';
 import { CreateFileDto } from './dto/create-file.dto';
 import { getFileFilterDto } from './dto/get-file-filter.dto';
+import { UpdateFileStatusDto } from './dto/update-file-status.dto';
 import { File, FileStatus } from './files.model';
 import { FilesService } from './files.service';
 
@@ -43,7 +44,8 @@ export class FilesController {
   }
 
   @Patch('/:id/status')
-  updateFile(@Param('id') id: string, @Body('status') status: FileStatus): File {
+  updateFile(@Param('id') id: string, @Body() updateFileStatusDto: UpdateFileStatusDto): File {
+    const { status } = updateFileStatusDto;
     return this.filesService.updateFile(id, status);
   }
 }

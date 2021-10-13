@@ -1,9 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { File, FileStatus } from './files.model';
 import { v4 as uuid } from 'uuid';
 import { CreateFileDto } from './dto/create-file.dto';
 import { getFileFilterDto } from './dto/get-file-filter.dto';
-import { filter } from 'rxjs';
 
 @Injectable()
 export class FilesService {
@@ -29,7 +28,11 @@ export class FilesService {
   }
 
   getFileById(id: string): File {
-    return this.files.find((file) => file.id === id);
+    const found =  this.files.find((file) => file.id === id);
+    if(!found){
+      throw new NotFoundException(`Task with ID "${id}" not found`);
+    }
+    return found;
   }
 
   createFile(createFileDto: CreateFileDto): File {
@@ -51,6 +54,7 @@ export class FilesService {
   }
 
   deleteFile(id: string): void {
-    this.files = this.files.filter((file) => file.id !== id);
+    const found = this.getFileById(id);
+    this.files = this.files.filter((file) => file.id !== found.id);
   }
 }
