@@ -1,5 +1,5 @@
 import { IsEnum } from "class-validator";
-import { FileStatus } from "../files.model";
+import { FileStatus } from "../file-status.enum";
 
 export class UpdateFileStatusDto{
   @IsEnum(FileStatus, {
